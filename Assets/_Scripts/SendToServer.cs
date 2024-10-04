@@ -13,7 +13,20 @@ public class SendToServer : MonoBehaviour
 
     private void OnEnable()
     {
-        Simulator.OnNewPlayer += LogAge;
+        Simulator.OnNewPlayer += LogData;
+        Simulator.OnNewSession += LogSessionStarted;
+        Simulator.OnEndSession += LogSessionEnded;
+    }
+
+    private void LogSessionEnded(DateTime time, uint arg2)
+    {
+        Debug.Log("Session ended");
+        Debug.Log(time);
+    }
+
+    private void LogSessionStarted(DateTime time, uint arg2)
+    {
+        Debug.Log("Session started");
     }
 
     // Update is called once per frame
@@ -22,13 +35,15 @@ public class SendToServer : MonoBehaviour
         
     }
 
-    void LogAge(string lname, string lcountry, int lage, float lgender, DateTime ldateTime)
+    void LogData(string lname, string lcountry, int lage, float lgender, DateTime ldateTime)
     {
         Debug.Log(lname);
         Debug.Log(lcountry);
         Debug.Log(lage);
         Debug.Log(lgender);
-        //Debug.Log("Date Time: ", ldateTime);
+        Debug.Log(ldateTime);
+
+        CallbackEvents.OnAddPlayerCallback.Invoke(9);
     }
 }
 
