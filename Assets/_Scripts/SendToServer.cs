@@ -11,10 +11,15 @@ public class SendToServer : MonoBehaviour
         
     }
 
+    private void OnEnable()
+    {
+        Simulator.OnNewPlayer += LogAge;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        Simulator.OnNewPlayer += LogAge;
+        
     }
 
     void LogAge(string lname, string lcountry, int lage, float lgender, DateTime ldateTime)
