@@ -5,6 +5,7 @@ using System.Data.SqlTypes;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.Networking;
+using System.Globalization;
 
 public class SendToServer : MonoBehaviour
 {
@@ -82,8 +83,8 @@ public class SendToServer : MonoBehaviour
         form.AddField("PlayerName", lname);
         form.AddField("PlayerCountry", lcountry);
         form.AddField("PlayerAge", lage);
-        form.AddField("PlayerGender", lgender.ToString());
-        form.AddField("PlayerJoinDate", ldateTime.ToString());
+        form.AddField("PlayerGender", lgender.ToString(CultureInfo.InvariantCulture));
+        form.AddField("PlayerJoinDate", ldateTime.ToString("yyyy-MM-dd HH:mm:ss"));
         StartCoroutine(Upload(form));
 
 
