@@ -39,9 +39,8 @@ public class SendToServer : MonoBehaviour
         form.AddField("ItemID", arg1.ToString());
         form.AddField("SessionID", arg3.ToString());
         form.AddField("ItemBoughtDate", time.ToString());
-        Upload(form);
+        StartCoroutine(Upload(form, CallbackEvents.OnItemBuyCallback, "https://citmalumnes.upc.es/~xavierac8/buy.php"));
 
-        CallbackEvents.OnItemBuyCallback.Invoke(1);
     }
 
     private void LogSessionEnded(DateTime time, uint arg2)
@@ -51,9 +50,8 @@ public class SendToServer : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("SessionID", arg2.ToString());
         form.AddField("SessionEndDate", time.ToString());
-        Upload(form);
+        StartCoroutine(Upload(form, CallbackEvents.OnEndSessionCallback, "https://citmalumnes.upc.es/~xavierac8/endsession.php"));
 
-        CallbackEvents.OnEndSessionCallback.Invoke(1);
     }
 
     private void LogSessionStarted(DateTime time, uint arg2)
@@ -63,9 +61,7 @@ public class SendToServer : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("SessionID", arg2.ToString());
         form.AddField("SessionStartDate", time.ToString());
-        Upload(form);
-
-        CallbackEvents.OnNewSessionCallback.Invoke(1);
+        StartCoroutine(Upload(form, CallbackEvents.OnNewSessionCallback, "https://citmalumnes.upc.es/~xavierac8/startsession.php"));
 
     }
 
@@ -85,16 +81,16 @@ public class SendToServer : MonoBehaviour
         form.AddField("PlayerAge", lage);
         form.AddField("PlayerGender", lgender.ToString(CultureInfo.InvariantCulture));
         form.AddField("PlayerJoinDate", ldateTime.ToString("yyyy-MM-dd HH:mm:ss"));
-        StartCoroutine(Upload(form));
+        StartCoroutine(Upload(form, CallbackEvents.OnAddPlayerCallback, "https://citmalumnes.upc.es/~xavierac8/player.php"));
+        
 
 
-       
     }
 
    
-    IEnumerator Upload(WWWForm form)
+    IEnumerator Upload(WWWForm form, Action<uint> callback, string url)
     {
-        using (UnityWebRequest www = UnityWebRequest.Post("https://citmalumnes.upc.es/~xavierac8/new1.php", form))
+        using (UnityWebRequest www = UnityWebRequest.Post(url, form))
         {
             yield return www.SendWebRequest();
 
@@ -106,7 +102,7 @@ public class SendToServer : MonoBehaviour
             {
                 Debug.Log("Form Upload Completed");
                 Debug.Log(www.downloadHandler.text);
-                CallbackEvents.OnAddPlayerCallback.Invoke(1);
+                callback.Invoke(1);
             }
         }
 
