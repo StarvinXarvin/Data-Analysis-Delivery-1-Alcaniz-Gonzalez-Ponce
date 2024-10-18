@@ -48,7 +48,7 @@ public class SendToServer : MonoBehaviour
         //Debug.Log("Session ended at " + time);
 
         WWWForm form = new WWWForm();
-        form.AddField("SessionID", arg2.ToString());
+        form.AddField("PlayerID", arg2.ToString());
         form.AddField("SessionEndDate", time.ToString());
         StartCoroutine(Upload(form, CallbackEvents.OnEndSessionCallback, "https://citmalumnes.upc.es/~xavierac8/endsession.php"));
 
@@ -59,7 +59,7 @@ public class SendToServer : MonoBehaviour
         //Debug.Log("Session started at " + time);
 
         WWWForm form = new WWWForm();
-        form.AddField("SessionID", arg2.ToString());
+        form.AddField("PlayerID", arg2.ToString());
         form.AddField("SessionStartDate", time.ToString());
         StartCoroutine(Upload(form, CallbackEvents.OnNewSessionCallback, "https://citmalumnes.upc.es/~xavierac8/startsession.php"));
 
@@ -101,8 +101,9 @@ public class SendToServer : MonoBehaviour
             else
             {
                 Debug.Log("Form Upload Completed");
-                Debug.Log(www.downloadHandler.text);
-                callback.Invoke(1);
+                Debug.Log(www.downloadHandler.text.ToString());
+                uint id = uint.Parse(www.downloadHandler.text.ToString());
+                callback.Invoke(id);
             }
         }
 
