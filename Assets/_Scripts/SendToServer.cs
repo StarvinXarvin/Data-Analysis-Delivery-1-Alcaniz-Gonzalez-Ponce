@@ -38,7 +38,7 @@ public class SendToServer : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("ItemID", arg1.ToString());
         form.AddField("SessionID", arg3.ToString());
-        form.AddField("ItemBoughtDate", time.ToString());
+        form.AddField("ItemBoughtDate", time.ToString("yyyy-MM-dd HH:mm:ss"));
         StartCoroutine(Upload(form, CallbackEvents.OnItemBuyCallback, "https://citmalumnes.upc.es/~xavierac8/buy.php"));
 
     }
@@ -48,8 +48,8 @@ public class SendToServer : MonoBehaviour
         //Debug.Log("Session ended at " + time);
 
         WWWForm form = new WWWForm();
-        form.AddField("PlayerID", arg2.ToString());
-        form.AddField("SessionEndDate", time.ToString());
+        form.AddField("SessionID", arg2.ToString());
+        form.AddField("SessionEndDate", time.ToString("yyyy-MM-dd HH:mm:ss"));
         StartCoroutine(Upload(form, CallbackEvents.OnEndSessionCallback, "https://citmalumnes.upc.es/~xavierac8/endsession.php"));
 
     }
@@ -60,7 +60,7 @@ public class SendToServer : MonoBehaviour
 
         WWWForm form = new WWWForm();
         form.AddField("PlayerID", arg2.ToString());
-        form.AddField("SessionStartDate", time.ToString());
+        form.AddField("SessionStartDate", time.ToString("yyyy-MM-dd HH:mm:ss"));
         StartCoroutine(Upload(form, CallbackEvents.OnNewSessionCallback, "https://citmalumnes.upc.es/~xavierac8/startsession.php"));
 
     }
