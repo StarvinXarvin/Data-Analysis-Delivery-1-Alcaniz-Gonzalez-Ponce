@@ -76,15 +76,25 @@ public class SendToServer : MonoBehaviour
         //Debug.Log("[Server] Player named " + lname + " Country: " + lcountry + " Age: " + lage + " Gender: " + lgender + " Date: " + ldateTime);
 
         WWWForm form = new WWWForm();
-        form.AddField("PlayerName", lname);
+        form.AddField("PlayerName", StringNormalize(lname));
         form.AddField("PlayerCountry", lcountry);
         form.AddField("PlayerAge", lage);
         form.AddField("PlayerGender", lgender.ToString(CultureInfo.InvariantCulture));
         form.AddField("PlayerJoinDate", ldateTime.ToString("yyyy-MM-dd HH:mm:ss"));
         StartCoroutine(Upload(form, CallbackEvents.OnAddPlayerCallback, "https://citmalumnes.upc.es/~xavierac8/player.php"));
+
+        
         
 
 
+    }
+
+    public static string StringNormalize(string input)
+    {
+        string normalized = input.Trim();
+        normalized = System.Text.RegularExpressions.Regex.Replace(normalized, @"[^a-zA-z0-9\s]", "");
+
+        return normalized;
     }
 
    
